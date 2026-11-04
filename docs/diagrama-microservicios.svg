@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-label="Diagrama de microservicios del Laboratorio 03">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#334155"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="720" rx="24" fill="#f8fafc"/>
+  <text x="600" y="48" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700" fill="#0f172a">Laboratorio 03 - Sistema de biblioteca con microservicios</text>
+  <text x="600" y="76" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="14" fill="#475569">Spring Boot · MySQL · API REST · Bases de datos separadas</text>
+
+  <rect x="60" y="135" width="180" height="86" rx="14" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+  <text x="150" y="171" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="700" fill="#075985">Postman</text>
+  <text x="150" y="195" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#0c4a6e">Cliente / pruebas API</text>
+
+  <rect x="360" y="125" width="300" height="110" rx="16" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="510" y="158" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700" fill="#1e3a8a">libro-service</text>
+  <text x="510" y="183" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#334155">CRUD libros · stock · estado</text>
+  <text x="510" y="206" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#334155">Puerto 8081 · /api/libros</text>
+
+  <rect x="800" y="125" width="300" height="110" rx="16" fill="#ffffff" stroke="#16a34a" stroke-width="2"/>
+  <text x="950" y="158" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700" fill="#14532d">lector-service</text>
+  <text x="950" y="183" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#334155">CRUD lectores · documento único</text>
+  <text x="950" y="206" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#334155">Puerto 8082 · /api/lectores</text>
+
+  <rect x="575" y="390" width="330" height="125" rx="16" fill="#ffffff" stroke="#9333ea" stroke-width="2"/>
+  <text x="740" y="425" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700" fill="#581c87">prestamo-service</text>
+  <text x="740" y="450" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#334155">Préstamos · devolución · historial</text>
+  <text x="740" y="473" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#334155">Puerto 8083 · /api/prestamos</text>
+  <text x="740" y="496" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#6b7280">Referencias por ID entre servicios</text>
+
+  <rect x="350" y="610" width="190" height="58" rx="12" fill="#dbeafe" stroke="#2563eb"/>
+  <text x="445" y="645" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="700" fill="#1e40af">bd_libro</text>
+
+  <rect x="610" y="610" width="190" height="58" rx="12" fill="#dcfce7" stroke="#16a34a"/>
+  <text x="705" y="645" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="700" fill="#166534">bd_lector</text>
+
+  <rect x="865" y="610" width="190" height="58" rx="12" fill="#f3e8ff" stroke="#9333ea"/>
+  <text x="960" y="645" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="700" fill="#6b21a8">bd_prestamo</text>
+
+  <line x1="240" y1="178" x2="350" y2="178" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="240" y1="178" x2="560" y2="410" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="240" y1="178" x2="790" y2="178" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <line x1="575" y1="235" x2="500" y2="390" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="835" y1="235" x2="760" y2="390" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <line x1="510" y1="235" x2="445" y2="605" stroke="#2563eb" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="950" y1="235" x2="710" y2="605" stroke="#16a34a" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="740" y1="515" x2="950" y2="605" stroke="#9333ea" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <rect x="55" y="355" width="370" height="165" rx="14" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="240" y="386" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" fill="#0f172a">Flujo de préstamo</text>
+  <text x="78" y="414" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#334155">1. Cliente registra préstamo.</text>
+  <text x="78" y="437" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#334155">2. prestamo-service valida lector.</text>
+  <text x="78" y="460" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#334155">3. Solicita reserva de stock al libro.</text>
+  <text x="78" y="483" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#334155">4. Persiste préstamo ACTIVO.</text>
+  <text x="78" y="506" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#334155">5. Devolución cambia estado y repone stock.</text>
+</svg>

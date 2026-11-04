@@ -1,0 +1,464 @@
+{
+  "info": {
+    "name": "Lab03 - Biblioteca Microservicios",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Colección de pruebas para los microservicios libro-service (8081), lector-service (8082) y prestamo-service (8083). Ejecute en orden: crear lector, crear libro, crear préstamo, devolver préstamo. Las variables lectorId, libroId y prestamoId se guardan automáticamente con scripts de prueba."
+  },
+  "variable": [
+    { "key": "libroUrl", "value": "http://localhost:8081" },
+    { "key": "lectorUrl", "value": "http://localhost:8082" },
+    { "key": "prestamoUrl", "value": "http://localhost:8083" },
+    { "key": "lectorId", "value": "1" },
+    { "key": "libroId", "value": "1" },
+    { "key": "prestamoId", "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "Lector",
+      "item": [
+        {
+          "name": "Crear lector válido",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Estado 201', () => pm.response.to.have.status(201));",
+                  "const body = pm.response.json();",
+                  "pm.collectionVariables.set('lectorId', body.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{lectorUrl}}/api/lectores", "host": ["{{lectorUrl}}"], "path": ["api", "lectores"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"documento\": \"12345678\",\n  \"nombres\": \"Sofía Cindell Carita Quispe\",\n  \"contacto\": \"sofia.carita@example.com\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Listar lectores",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": ["pm.test('Estado 200', () => pm.response.to.have.status(200));"]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{lectorUrl}}/api/lectores", "host": ["{{lectorUrl}}"], "path": ["api", "lectores"] }
+          }
+        },
+        {
+          "name": "Obtener lector por ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": ["pm.test('Estado 200', () => pm.response.to.have.status(200));"]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{lectorUrl}}/api/lectores/{{lectorId}}", "host": ["{{lectorUrl}}"], "path": ["api", "lectores", "{{lectorId}}"] }
+          }
+        },
+        {
+          "name": "Crear lector inválido: documento incorrecto",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Estado 400', () => pm.response.to.have.status(400));",
+                  "pm.test('Incluye detalles de validación', () => pm.expect(pm.response.json().details).to.be.an('object'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{lectorUrl}}/api/lectores", "host": ["{{lectorUrl}}"], "path": ["api", "lectores"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"documento\": \"@@@\",\n  \"nombres\": \"Lector Inválido\",\n  \"contacto\": \"invalido@example.com\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Obtener lector inexistente",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": ["pm.test('Estado 404', () => pm.response.to.have.status(404));"]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{lectorUrl}}/api/lectores/999999", "host": ["{{lectorUrl}}"], "path": ["api", "lectores", "999999"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Libro",
+      "item": [
+        {
+          "name": "Crear libro válido",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Estado 201', () => pm.response.to.have.status(201));",
+                  "const body = pm.response.json();",
+                  "pm.collectionVariables.set('libroId', body.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{libroUrl}}/api/libros", "host": ["{{libroUrl}}"], "path": ["api", "libros"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isbn\": \"978-612000001-0\",\n  \"titulo\": \"Clean Code\",\n  \"autor\": \"Robert C. Martin\",\n  \"stock\": 2,\n  \"estado\": \"DISPONIBLE\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Listar libros",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": ["pm.test('Estado 200', () => pm.response.to.have.status(200));"]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{libroUrl}}/api/libros", "host": ["{{libroUrl}}"], "path": ["api", "libros"] }
+          }
+        },
+        {
+          "name": "Obtener libro por ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": ["pm.test('Estado 200', () => pm.response.to.have.status(200));"]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{libroUrl}}/api/libros/{{libroId}}", "host": ["{{libroUrl}}"], "path": ["api", "libros", "{{libroId}}"] }
+          }
+        },
+        {
+          "name": "Actualizar libro",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": ["pm.test('Estado 200', () => pm.response.to.have.status(200));"]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{libroUrl}}/api/libros/{{libroId}}", "host": ["{{libroUrl}}"], "path": ["api", "libros", "{{libroId}}"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isbn\": \"978-612000001-0\",\n  \"titulo\": \"Clean Code: A Handbook of Agile Software Craftsmanship\",\n  \"autor\": \"Robert C. Martin\",\n  \"stock\": 2,\n  \"estado\": \"DISPONIBLE\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Crear libro inválido: stock negativo",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Estado 400', () => pm.response.to.have.status(400));",
+                  "pm.test('Incluye error de stock', () => pm.expect(pm.response.json().details.stock).to.exist);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{libroUrl}}/api/libros", "host": ["{{libroUrl}}"], "path": ["api", "libros"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isbn\": \"978-612000002-7\",\n  \"titulo\": \"Libro inválido\",\n  \"autor\": \"Autor\",\n  \"stock\": -1,\n  \"estado\": \"DISPONIBLE\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Crear libro duplicado",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": ["pm.test('Estado 409', () => pm.response.to.have.status(409));"]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{libroUrl}}/api/libros", "host": ["{{libroUrl}}"], "path": ["api", "libros"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isbn\": \"978-612000001-0\",\n  \"titulo\": \"Clean Code duplicado\",\n  \"autor\": \"Robert C. Martin\",\n  \"stock\": 1,\n  \"estado\": \"DISPONIBLE\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Prestamo y devolucion",
+      "item": [
+        {
+          "name": "Registrar préstamo válido",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Estado 201', () => pm.response.to.have.status(201));",
+                  "const body = pm.response.json();",
+                  "pm.collectionVariables.set('prestamoId', body.id);",
+                  "pm.test('Estado ACTIVO', () => pm.expect(body.estado).to.eql('ACTIVO'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{prestamoUrl}}/api/prestamos", "host": ["{{prestamoUrl}}"], "path": ["api", "prestamos"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"lectorId\": {{lectorId}},\n  \"libroId\": {{libroId}},\n  \"fechaPrestamo\": \"2026-11-04\",\n  \"fechaLimite\": \"2026-11-18\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Registrar préstamo inválido: fecha límite anterior",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Estado 400', () => pm.response.to.have.status(400));",
+                  "pm.test('Mensaje comprensible', () => pm.expect(pm.response.json().message).to.be.a('string'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{prestamoUrl}}/api/prestamos", "host": ["{{prestamoUrl}}"], "path": ["api", "prestamos"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"lectorId\": {{lectorId}},\n  \"libroId\": {{libroId}},\n  \"fechaPrestamo\": \"2026-11-04\",\n  \"fechaLimite\": \"2026-11-01\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Registrar préstamo inválido: lector inexistente",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": ["pm.test('Estado 404', () => pm.response.to.have.status(404));"]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{prestamoUrl}}/api/prestamos", "host": ["{{prestamoUrl}}"], "path": ["api", "prestamos"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"lectorId\": 999999,\n  \"libroId\": {{libroId}},\n  \"fechaPrestamo\": \"2026-11-04\",\n  \"fechaLimite\": \"2026-11-18\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Registrar préstamo inválido: libro inexistente",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": ["pm.test('Estado 404', () => pm.response.to.have.status(404));"]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{prestamoUrl}}/api/prestamos", "host": ["{{prestamoUrl}}"], "path": ["api", "prestamos"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"lectorId\": {{lectorId}},\n  \"libroId\": 999999,\n  \"fechaPrestamo\": \"2026-11-04\",\n  \"fechaLimite\": \"2026-11-18\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Listar préstamos",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": ["pm.test('Estado 200', () => pm.response.to.have.status(200));"]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{prestamoUrl}}/api/prestamos", "host": ["{{prestamoUrl}}"], "path": ["api", "prestamos"] }
+          }
+        },
+        {
+          "name": "Obtener préstamo por ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": ["pm.test('Estado 200', () => pm.response.to.have.status(200));"]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{prestamoUrl}}/api/prestamos/{{prestamoId}}", "host": ["{{prestamoUrl}}"], "path": ["api", "prestamos", "{{prestamoId}}"] }
+          }
+        },
+        {
+          "name": "Listar préstamos activos del lector",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": ["pm.test('Estado 200', () => pm.response.to.have.status(200));"]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{prestamoUrl}}/api/prestamos?lectorId={{lectorId}}&estado=ACTIVO", "host": ["{{prestamoUrl}}"], "path": ["api", "prestamos"], "query": [{ "key": "lectorId", "value": "{{lectorId}}" }, { "key": "estado", "value": "ACTIVO" }] }
+          }
+        },
+        {
+          "name": "Ampliar fecha límite",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": ["pm.test('Estado 200', () => pm.response.to.have.status(200));"]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{prestamoUrl}}/api/prestamos/{{prestamoId}}", "host": ["{{prestamoUrl}}"], "path": ["api", "prestamos", "{{prestamoId}}"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fechaLimite\": \"2026-11-25\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Devolver préstamo",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Estado 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Estado DEVUELTO', () => pm.expect(pm.response.json().estado).to.eql('DEVUELTO'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "url": { "raw": "{{prestamoUrl}}/api/prestamos/{{prestamoId}}/devolucion", "host": ["{{prestamoUrl}}"], "path": ["api", "prestamos", "{{prestamoId}}", "devolucion"] }
+          }
+        },
+        {
+          "name": "Devolver préstamo por segunda vez",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": ["pm.test('Estado 409', () => pm.response.to.have.status(409));"]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "url": { "raw": "{{prestamoUrl}}/api/prestamos/{{prestamoId}}/devolucion", "host": ["{{prestamoUrl}}"], "path": ["api", "prestamos", "{{prestamoId}}", "devolucion"] }
+          }
+        },
+        {
+          "name": "Eliminar préstamo devuelto",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": ["pm.test('Estado 204', () => pm.response.to.have.status(204));"]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{prestamoUrl}}/api/prestamos/{{prestamoId}}", "host": ["{{prestamoUrl}}"], "path": ["api", "prestamos", "{{prestamoId}}"] }
+          }
+        }
+      ]
+    }
+  ]
+}
